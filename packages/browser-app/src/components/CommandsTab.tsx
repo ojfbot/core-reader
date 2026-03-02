@@ -5,7 +5,8 @@ import { CommandCard } from './CommandCard'
 import './CommandsTab.css'
 
 const TIERS = [1, 2, 3]
-const PHASES = ['Planning', 'Kick-off', 'Debugging', 'Quality gate', 'Release', 'Post-ship', 'Continuous', 'Daily/weekly']
+// Phase filter labels — wired in Phase 2
+// const PHASES = ['Planning', 'Kick-off', 'Debugging', 'Quality gate', 'Release', 'Post-ship', 'Continuous', 'Daily/weekly']
 
 export default function CommandsTab() {
   const dispatch = useAppDispatch()

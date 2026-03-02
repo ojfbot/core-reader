@@ -44,11 +44,8 @@ function DashboardContent({ shellMode }: DashboardProps) {
 
   const tabIndex = TABS.indexOf(activeTab)
 
-  return (
-    // <Theme> activates .cds--white CSS custom properties on this subtree.
-    // Without this wrapper, Carbon component styles use fallback token values
-    // and look unstyled when loaded as an MF remote inside Shell.
-    <Theme theme="white">
+  const inner = (
+    <>
       <div
         className={[
           'dashboard-wrapper',
@@ -98,8 +95,14 @@ function DashboardContent({ shellMode }: DashboardProps) {
       {/* Context panel — structural shell now; content wired in Phase 2.
           Lives outside dashboard-wrapper so it can overlay the full viewport. */}
       <ThreadSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-    </Theme>
+    </>
   )
+
+  // In shell: CSS custom properties cascade from the shell's own theme class
+  // (.cds--white / .cds--g100) applied by the shell's <Theme> wrapper.
+  // Adding a second <Theme> here would override the shell's active theme.
+  // Standalone: wrap in White theme so zone CSS activates the token definitions.
+  return shellMode ? inner : <Theme theme="white">{inner}</Theme>
 }
 
 // MF export — self-contained with its own Redux Provider.
