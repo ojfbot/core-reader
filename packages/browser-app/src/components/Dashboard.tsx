@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
-import { Theme, Heading, Tabs, TabList, Tab, TabPanels, TabPanel, IconButton } from '@carbon/react'
+import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel, IconButton } from '@carbon/react'
 import { Switcher } from '@carbon/icons-react'
 import { store } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -44,14 +44,17 @@ function DashboardContent({ shellMode }: DashboardProps) {
 
   const tabIndex = TABS.indexOf(activeTab)
 
-  const inner = (
+  return (
     <>
+      {/* Context panel — position:fixed, overlays full viewport.
+          Rendered before dashboard-wrapper (same pattern as cv-builder ThreadSidebar). */}
+      <ThreadSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
       <div
         className={[
           'dashboard-wrapper',
           shellMode ? 'shell-mode' : '',
           sidebarOpen ? 'sidebar-open' : '',
-          'chat-visible',          // CondensedChat always takes bottom space in Phase 1
         ].filter(Boolean).join(' ')}
         data-element="app-container"
       >
@@ -87,22 +90,13 @@ function DashboardContent({ shellMode }: DashboardProps) {
             <TabPanel><RoadmapTab /></TabPanel>
           </TabPanels>
         </Tabs>
-
-        {/* CondensedChat: visible but disabled in Phase 1. Wired in Phase 4. */}
-        <CondensedChat />
       </div>
 
-      {/* Context panel — structural shell now; content wired in Phase 2.
-          Lives outside dashboard-wrapper so it can overlay the full viewport. */}
-      <ThreadSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {/* CondensedChat: outside dashboard-wrapper (same pattern as cv-builder).
+          Visible but disabled in Phase 1. Wired in Phase 4. */}
+      <CondensedChat />
     </>
   )
-
-  // In shell: CSS custom properties cascade from the shell's own theme class
-  // (.cds--white / .cds--g100) applied by the shell's <Theme> wrapper.
-  // Adding a second <Theme> here would override the shell's active theme.
-  // Standalone: wrap in White theme so zone CSS activates the token definitions.
-  return shellMode ? inner : <Theme theme="white">{inner}</Theme>
 }
 
 // MF export — self-contained with its own Redux Provider.

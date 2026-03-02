@@ -82,9 +82,3 @@
   margin: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CondensedChat spacer — leave room at bottom when chat is visible
-   ═══════════════════════════════════════════════════════════ */
-.dashboard-wrapper.chat-visible {
-  padding-bottom: 80px;
-}
