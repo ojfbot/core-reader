@@ -1,0 +1,62 @@
+/* ── ThreadSidebar / Context panel ──────────────────────────────────────────
+   position:fixed so the panel overlays the shell's content area.
+   top:48px = shell header height (var(--cr-header-height)).
+
+   Containing-block caveat: if a parent has `transform` or `will-change:transform`,
+   `position:fixed` resolves against that element, not the viewport.
+   Use `top: 0 !important` override if Carbon SideNav breaks (see shell-mf-integration.md).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.cr-thread-sidebar {
+  position: fixed;
+  top: var(--cr-header-height, 48px);
+  right: 0;
+  bottom: 0;
+  width: var(--cr-sidebar-width, 320px);
+  background: var(--cds-layer-01, #f4f4f4);
+  border-left: 1px solid var(--cds-border-subtle);
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform var(--cr-animation-duration, 0.3s) ease;
+  /* Inert state: also hidden from pointer events when closed */
+  pointer-events: none;
+}
+
+.cr-thread-sidebar--open {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* ── Header ── */
+.cr-thread-sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.75rem 0.75rem 1rem;
+  border-bottom: 1px solid var(--cds-border-subtle);
+  flex-shrink: 0;
+}
+
+.cr-thread-sidebar__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cds-text-primary, #161616);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Body ── */
+.cr-thread-sidebar__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.cr-thread-sidebar__placeholder {
+  font-size: 0.8125rem;
+  color: var(--cds-text-secondary, #525252);
+  font-style: italic;
+  margin: 0;
+}

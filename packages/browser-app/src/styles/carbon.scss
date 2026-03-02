@@ -1,12 +1,33 @@
-// Selective Carbon imports — minimizes bundle size vs. full @use "@carbon/react"
-// Optimize: see shell-app/src/styles/carbon.scss for the 191KB vs 600KB pattern
+// ── Carbon SCSS — selective component imports ────────────────────────────────
+//
+// Mirrors the shell's carbon.scss pattern exactly so theme class selectors
+// (.cds--white, .cds--g100) are emitted and CSS custom properties cascade
+// correctly when CoreReader is loaded as an MF remote inside Shell.
+//
+// ORDER matters — config must be first.
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Theme tokens + reset (required first)
+// 1. Global configuration — must match shell's prefix so class names align
+@use "@carbon/react/scss/config" with (
+  $prefix: 'cds',
+  $css--font-face: true,
+);
+
+// 2. Reset + foundational layers
 @use "@carbon/react/scss/reset";
-@use "@carbon/react/scss/theme";
-@use "@carbon/react/scss/themes";
+@use "@carbon/react/scss/layer";
+@use "@carbon/react/scss/type" as *;
 
-// Components used in CoreReader Phase 1
+// 3. Theme token system.
+//    zone — generates .cds--white { --cds-background: #fff; ... } class selectors.
+//    <Theme theme="white"> from @carbon/react adds .cds--white to its wrapper,
+//    which activates the CSS custom properties scoped to that subtree.
+//    Without zone, <Theme> adds the class but the CSS is never emitted → no tokens.
+@use "@carbon/react/scss/themes";
+@use "@carbon/react/scss/theme";
+@use "@carbon/react/scss/zone";
+
+// 4. Components used in CoreReader Phase 1
 @use "@carbon/react/scss/components/content-switcher";
 @use "@carbon/react/scss/components/tabs";
 @use "@carbon/react/scss/components/tag";

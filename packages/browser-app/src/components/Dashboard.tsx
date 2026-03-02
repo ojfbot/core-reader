@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
-import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel } from '@carbon/react'
+import { Theme, Heading, Tabs, TabList, Tab, TabPanels, TabPanel, IconButton } from '@carbon/react'
+import { Switcher } from '@carbon/icons-react'
 import { store } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { setActiveTab } from '../store/slices/navigationSlice'
@@ -11,6 +12,13 @@ import CommandsTab from './CommandsTab'
 import ADRsTab from './ADRsTab'
 import RoadmapTab from './RoadmapTab'
 import CondensedChat from './CondensedChat'
+import ThreadSidebar from './ThreadSidebar'
+// Styles must be imported here, not only in main.tsx.
+// cssInjectedByJs targets __federation_expose_Dashboard — it only injects CSS
+// that lives in Dashboard's module graph. Imports in main.tsx land in the entry
+// chunk and are never seen by the shell when it loads this remote module.
+import '../styles/carbon.scss'
+import '../styles/tokens.css'
 import './Dashboard.css'
 
 interface DashboardProps {
@@ -25,6 +33,7 @@ const TABS = ['commands', 'adrs', 'roadmap'] as const
 function DashboardContent({ shellMode }: DashboardProps) {
   const dispatch = useAppDispatch()
   const activeTab = useAppSelector(state => state.navigation.activeTab)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Fetch all data on mount
   useEffect(() => {
@@ -36,38 +45,60 @@ function DashboardContent({ shellMode }: DashboardProps) {
   const tabIndex = TABS.indexOf(activeTab)
 
   return (
-    <div
-      className={[
-        'dashboard-wrapper',
-        shellMode ? 'shell-mode' : '',
-        'chat-visible',          // CondensedChat always takes bottom space in Phase 1
-      ].filter(Boolean).join(' ')}
-      data-element="app-container"
-    >
-      <div className="dashboard-header">
-        {/* Suppress app title in shell — shell header already shows app name */}
-        {!shellMode && <Heading className="page-header">CoreReader</Heading>}
+    // <Theme> activates .cds--white CSS custom properties on this subtree.
+    // Without this wrapper, Carbon component styles use fallback token values
+    // and look unstyled when loaded as an MF remote inside Shell.
+    <Theme theme="white">
+      <div
+        className={[
+          'dashboard-wrapper',
+          shellMode ? 'shell-mode' : '',
+          sidebarOpen ? 'sidebar-open' : '',
+          'chat-visible',          // CondensedChat always takes bottom space in Phase 1
+        ].filter(Boolean).join(' ')}
+        data-element="app-container"
+      >
+        <div className="dashboard-header">
+          {/* Suppress app title in shell — shell header already shows app name */}
+          {!shellMode && <Heading className="page-header">CoreReader</Heading>}
+
+          {/* Context panel toggle — always visible */}
+          <IconButton
+            className="dashboard-sidebar-toggle"
+            label={sidebarOpen ? 'Close context panel' : 'Open context panel'}
+            kind="ghost"
+            size="sm"
+            align="bottom-right"
+            onClick={() => setSidebarOpen(o => !o)}
+          >
+            <Switcher size={16} />
+          </IconButton>
+        </div>
+
+        <Tabs
+          selectedIndex={tabIndex >= 0 ? tabIndex : 0}
+          onChange={({ selectedIndex }) => dispatch(setActiveTab(TABS[selectedIndex]))}
+        >
+          <TabList contained>
+            <Tab>Commands</Tab>
+            <Tab>ADRs</Tab>
+            <Tab>Roadmap</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel><CommandsTab /></TabPanel>
+            <TabPanel><ADRsTab /></TabPanel>
+            <TabPanel><RoadmapTab /></TabPanel>
+          </TabPanels>
+        </Tabs>
+
+        {/* CondensedChat: visible but disabled in Phase 1. Wired in Phase 4. */}
+        <CondensedChat />
       </div>
 
-      <Tabs
-        selectedIndex={tabIndex >= 0 ? tabIndex : 0}
-        onChange={({ selectedIndex }) => dispatch(setActiveTab(TABS[selectedIndex]))}
-      >
-        <TabList contained>
-          <Tab>Commands</Tab>
-          <Tab>ADRs</Tab>
-          <Tab>Roadmap</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel><CommandsTab /></TabPanel>
-          <TabPanel><ADRsTab /></TabPanel>
-          <TabPanel><RoadmapTab /></TabPanel>
-        </TabPanels>
-      </Tabs>
-
-      {/* CondensedChat: visible but disabled in Phase 1. Wired in Phase 4. */}
-      <CondensedChat />
-    </div>
+      {/* Context panel — structural shell now; content wired in Phase 2.
+          Lives outside dashboard-wrapper so it can overlay the full viewport. */}
+      <ThreadSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    </Theme>
   )
 }
 
