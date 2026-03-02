@@ -6,7 +6,10 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  margin: 0 var(--cr-dashboard-margin);
+  /* 36px top/bottom breathing room (matches cv-builder), 72px horizontal margins */
+  margin: 2.25rem var(--cr-dashboard-margin);
+  position: relative;
+  z-index: 1;
   transition: margin-right var(--cr-animation-duration) ease;
 }
 
@@ -25,7 +28,14 @@
      .cds--tab-panels    — fills remaining space
    ═══════════════════════════════════════════════════════════ */
 .dashboard-wrapper.shell-mode {
+  /* Shell: increase top gap to match horizontal margin (72px = 4.5rem).
+   * Bottom stays at 2.25rem from base, matching cv-builder's shell-mode bottom gap. */
   margin-top: var(--cr-dashboard-margin-top);
+}
+
+/* When chat is expanded: add bottom margin so panel doesn't hide behind CondensedChat */
+.dashboard-wrapper.shell-mode.chat-expanded {
+  margin-bottom: var(--cr-dashboard-margin-top);
 }
 
 /* Tab bar: must not grow or it steals space from panels */
@@ -76,9 +86,29 @@
 }
 
 .dashboard-header .page-header {
-  font-size: var(--cds-heading-04-font-size);
-  font-weight: var(--cds-heading-04-font-weight);
-  color: var(--cds-text-primary);
   margin: 0;
+}
+
+.sidebar-toggle-btn {
+  padding: 0.5rem;
+  background: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--cds-icon-primary);
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--cds-layer-hover);
+  border-color: var(--cds-border-strong);
+}
+
+/* Sidebar open: compress right edge to make room for the 320px sidebar panel */
+.dashboard-wrapper.with-sidebar {
+  margin-right: calc(320px + 2rem);
 }
 

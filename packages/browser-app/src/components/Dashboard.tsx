@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
-import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel, IconButton } from '@carbon/react'
-import { Switcher } from '@carbon/icons-react'
+import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel, Tooltip } from '@carbon/react'
+import { Menu, Close } from '@carbon/icons-react'
 import { store } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { setActiveTab } from '../store/slices/navigationSlice'
@@ -22,9 +22,9 @@ import '../styles/tokens.css'
 import './Dashboard.css'
 
 interface DashboardProps {
-  /** True when mounted inside the Frame shell host. Suppresses the internal
-   *  app title heading and activates the flex height chain so tab content
-   *  fills the shell frame. Does not remove chat or navigation controls. */
+  /** True when mounted inside the Frame shell host. Activates the flex height
+   *  chain so tab content fills the shell frame. Title is always visible
+   *  (unlike cv-builder, CoreReader has no shell-level breadcrumb for its name). */
   shellMode?: boolean
 }
 
@@ -54,25 +54,22 @@ function DashboardContent({ shellMode }: DashboardProps) {
         className={[
           'dashboard-wrapper',
           shellMode ? 'shell-mode' : '',
-          sidebarOpen ? 'sidebar-open' : '',
+          sidebarOpen ? 'with-sidebar' : '',
         ].filter(Boolean).join(' ')}
         data-element="app-container"
       >
         <div className="dashboard-header">
-          {/* Suppress app title in shell — shell header already shows app name */}
-          {!shellMode && <Heading className="page-header">CoreReader</Heading>}
+          <Heading className="page-header">Core Reader Dashboard</Heading>
 
-          {/* Context panel toggle — always visible */}
-          <IconButton
-            className="dashboard-sidebar-toggle"
-            label={sidebarOpen ? 'Close conversations' : 'Open conversations'}
-            kind="ghost"
-            size="sm"
-            align="bottom-right"
-            onClick={() => setSidebarOpen(o => !o)}
-          >
-            <Switcher size={16} />
-          </IconButton>
+          <Tooltip align="bottom-right" label={sidebarOpen ? 'Close threads' : 'Show threads'}>
+            <button
+              className="sidebar-toggle-btn"
+              onClick={() => setSidebarOpen(o => !o)}
+              aria-label="Toggle thread sidebar"
+            >
+              {sidebarOpen ? <Close size={20} /> : <Menu size={20} />}
+            </button>
+          </Tooltip>
         </div>
 
         <Tabs
