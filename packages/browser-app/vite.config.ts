@@ -36,6 +36,14 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    port: 3015,
+    cors: true,   // shell at :4000 needs to fetch remoteEntry.js cross-origin
+  },
+  preview: {
+    port: 3015,
+    cors: true,
+  },
   build: {
     target: 'esnext',
     minify: false,      // required for MF module graph correctness
