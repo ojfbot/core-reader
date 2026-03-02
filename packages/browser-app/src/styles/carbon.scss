@@ -14,7 +14,7 @@
 @use "@carbon/react/scss/components/search";
 @use "@carbon/react/scss/components/text-input";
 @use "@carbon/react/scss/components/inline-loading";
-@use "@carbon/react/scss/components/inline-notification";
+@use "@carbon/react/scss/components/notification";  // v1.80+ merged inline-notification here
 @use "@carbon/react/scss/components/accordion";
 @use "@carbon/react/scss/components/structured-list";
 @use "@carbon/react/scss/components/data-table";
