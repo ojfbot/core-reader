@@ -48,7 +48,7 @@ function DashboardContent({ shellMode }: DashboardProps) {
     <>
       {/* Context panel — position:fixed, overlays full viewport.
           Rendered before dashboard-wrapper (same pattern as cv-builder ThreadSidebar). */}
-      <ThreadSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <ThreadSidebar isExpanded={sidebarOpen} onToggle={() => setSidebarOpen(o => !o)} />
 
       <div
         className={[
@@ -65,7 +65,7 @@ function DashboardContent({ shellMode }: DashboardProps) {
           {/* Context panel toggle — always visible */}
           <IconButton
             className="dashboard-sidebar-toggle"
-            label={sidebarOpen ? 'Close context panel' : 'Open context panel'}
+            label={sidebarOpen ? 'Close conversations' : 'Open conversations'}
             kind="ghost"
             size="sm"
             align="bottom-right"
@@ -92,9 +92,8 @@ function DashboardContent({ shellMode }: DashboardProps) {
         </Tabs>
       </div>
 
-      {/* CondensedChat: outside dashboard-wrapper (same pattern as cv-builder).
-          Visible but disabled in Phase 1. Wired in Phase 4. */}
-      <CondensedChat />
+      {/* CondensedChat: outside dashboard-wrapper, sidebar-aware positioning */}
+      <CondensedChat sidebarExpanded={sidebarOpen} />
     </>
   )
 }
