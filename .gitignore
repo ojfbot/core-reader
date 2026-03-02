@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.env
+.env.local
+env.json
+tmp/
+.DS_Store
+*.log
+
+# Knowledge context (symlinked from core — not committed per-repo)
+domain-knowledge/
+personal-knowledge/
+decisions/
+
+# Claude Code
+.claude/commands/
+.claude/settings.json
+
+# Build artifacts
+packages/browser-app/dist/
+packages/api/dist/

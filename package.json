@@ -1,0 +1,17 @@
+{
+  "name": "core-reader",
+  "private": true,
+  "scripts": {
+    "dev:all": "concurrently \"pnpm --filter @core-reader/api dev\" \"pnpm --filter @core-reader/browser-app dev\"",
+    "build": "pnpm -r build",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "concurrently": "^9.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}

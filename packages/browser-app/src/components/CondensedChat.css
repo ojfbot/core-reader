@@ -1,0 +1,18 @@
+.condensed-chat {
+  /* Sticky footer — sits above viewport bottom; sidebar-aware positioning
+     handled by parent dashboard-wrapper classes (no sidebar in Phase 1) */
+  border-top: 1px solid var(--cds-border-subtle);
+  background: var(--cds-layer-01);
+  padding: 0.625rem 1rem;
+  flex-shrink: 0;
+}
+
+/* Size down Carbon's default input to match sidebar density */
+.condensed-chat .cds--text-input {
+  height: 2rem;
+  font-size: 0.875rem;
+}
+
+.condensed-chat .cds--text-input:disabled {
+  cursor: not-allowed;
+}

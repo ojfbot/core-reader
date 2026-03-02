@@ -1,0 +1,151 @@
+.adr-card {
+  border-bottom: 1px solid var(--cds-border-subtle);
+}
+
+.adr-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--cds-text-primary);
+  transition: background-color 0.1s ease;
+}
+
+.adr-card__header:hover {
+  background-color: var(--cds-layer-hover);
+}
+
+.adr-card__meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.adr-card__number {
+  font-family: var(--cds-code-01-font-family, 'IBM Plex Mono', monospace);
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+  margin-right: 0.5rem;
+}
+
+.adr-card__title {
+  font-size: var(--cds-body-short-01-font-size);
+  font-weight: 500;
+  color: var(--cds-text-primary);
+}
+
+.adr-card__tags {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.adr-card__date {
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+}
+
+.adr-card__chevron {
+  flex-shrink: 0;
+  color: var(--cds-text-secondary);
+  padding-top: 2px;
+}
+
+.adr-card__content {
+  padding: 0 1rem 1.25rem;
+  border-top: 1px solid var(--cds-border-subtle-01);
+}
+
+.adr-card__chips {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.625rem;
+}
+
+.adr-card__chip-label {
+  font-size: 0.7rem;
+  color: var(--cds-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  min-width: 4rem;
+}
+
+/* Command cross-link button — Tag appearance with click affordance */
+.adr-card__cmd-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.adr-card__cmd-link:hover {
+  opacity: 0.8;
+}
+.adr-card__cmd-link .cds--tag {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.adr-card__markdown {
+  margin-top: 1rem;
+  font-size: var(--cds-body-short-01-font-size);
+  line-height: 1.5;
+}
+
+/* Reuse CommandCard markdown styles */
+.adr-card__markdown h1,
+.adr-card__markdown h2,
+.adr-card__markdown h3 {
+  font-size: var(--cds-heading-compact-02-font-size);
+  font-weight: var(--cds-heading-compact-02-font-weight);
+  margin: 1rem 0 0.5rem;
+  color: var(--cds-text-primary);
+}
+
+.adr-card__markdown code {
+  font-family: var(--cds-code-01-font-family, 'IBM Plex Mono', monospace);
+  font-size: 0.8em;
+  background: var(--cds-layer-accent-01);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+.adr-card__markdown pre {
+  background: var(--cds-layer-02);
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 2px;
+  margin: 0.75rem 0;
+}
+
+.adr-card__markdown pre code {
+  background: none;
+  padding: 0;
+}
+
+.adr-card__markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75rem 0;
+  font-size: 0.85em;
+}
+
+.adr-card__markdown th,
+.adr-card__markdown td {
+  border: 1px solid var(--cds-border-subtle);
+  padding: 0.375rem 0.75rem;
+  text-align: left;
+}
+
+.adr-card__markdown th {
+  background: var(--cds-layer-accent-01);
+}
