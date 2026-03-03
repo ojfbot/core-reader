@@ -1,0 +1,16 @@
+{
+  "buildCommand": "pnpm --filter @core-reader/browser-app build",
+  "outputDirectory": "packages/browser-app/dist",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": null,
+  "rewrites": [{ "source": "/((?!assets/).*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "https://frame.jim.software" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET" }
+      ]
+    }
+  ]
+}
