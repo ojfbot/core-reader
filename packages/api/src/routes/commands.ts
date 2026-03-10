@@ -12,7 +12,7 @@ export function commandsRouter(coreRepoPath: string): Router {
   })
 
   router.get('/:name', (req: Request, res: Response) => {
-    const command = getCommandContent(coreRepoPath, req.params.name)
+    const command = getCommandContent(coreRepoPath, String(req.params.name))
     if (!command) return res.status(404).json({ error: 'Command not found' })
     res.json(command)
   })

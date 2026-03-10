@@ -16,7 +16,7 @@ export function adrsRouter(coreRepoPath: string): Router {
   })
 
   router.get('/:number', (req: Request, res: Response) => {
-    const adr = getADR(coreRepoPath, req.params.number)
+    const adr = getADR(coreRepoPath, String(req.params.number))
     if (!adr) return res.status(404).json({ error: 'ADR not found' })
     res.json(adr)
   })

@@ -1,4 +1,7 @@
-const BASE_URL = import.meta.env.VITE_CORE_READER_API_URL || 'http://localhost:3016'
+// In production (same-origin Vercel deployment) use relative URLs.
+// For local dev, point at the API server: VITE_CORE_READER_API_URL=http://localhost:3016
+const BASE_URL: string = import.meta.env.VITE_CORE_READER_API_URL
+  ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`)

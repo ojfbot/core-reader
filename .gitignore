@@ -10,7 +10,9 @@ tmp/
 # Knowledge context (symlinked from core — not committed per-repo)
 domain-knowledge/
 personal-knowledge/
-decisions/
+decisions/core
+decisions/okr
+# decisions/adr/ is committed here (ADR snapshots for Vercel deployment)
 
 # Claude Code
 .claude/commands/

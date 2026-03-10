@@ -2,6 +2,72 @@ import fs from 'fs'
 import path from 'path'
 import { ADRManifest } from '../types'
 
+// Minimal FrameBead shape — matches @core/workflows FrameBead interface (ADR-0016)
+// Defined inline to avoid cross-repo dependency.
+export interface FrameBeadLike {
+  id: string
+  type: 'adr'
+  status: 'created' | 'live' | 'closed' | 'archived'
+  title: string
+  body: string
+  labels: Record<string, string>
+  actor: string
+  refs: string[]
+  created_at: string
+  updated_at: string
+  closed_at?: string
+}
+
+export function parseADRsAsBeads(coreRepoPath: string): FrameBeadLike[] {
+  const adrDir = resolveADRDir(coreRepoPath)
+  if (!adrDir) return []
+
+  const files = fs.readdirSync(adrDir)
+    .filter(f => /^\d{4}-/.test(f) && f.endsWith('.md') && f !== 'template.md')
+    .sort()
+    .reverse()
+
+  return files.map(filename => {
+    const adr = parseADRFile(path.join(adrDir, filename), filename)
+    const body = fs.readFileSync(path.join(adrDir, filename), 'utf-8')
+    const beadStatus = mapADRStatus(adr.status)
+    const ts = adr.date ? isoFromDate(adr.date) : new Date(0).toISOString()
+
+    const bead: FrameBeadLike = {
+      id: `core-adr-${adr.number.padStart(4, '0')}`,
+      type: 'adr',
+      status: beadStatus,
+      title: adr.title,
+      body,
+      labels: adr.okr ? { okr: adr.okr } : {},
+      actor: 'system',
+      refs: adr.reposAffected,
+      created_at: ts,
+      updated_at: ts,
+    }
+    if (beadStatus === 'closed' || beadStatus === 'archived') {
+      bead.closed_at = ts
+    }
+    return bead
+  })
+}
+
+function mapADRStatus(raw: string): FrameBeadLike['status'] {
+  const s = raw.toLowerCase()
+  if (s === 'accepted') return 'live'
+  if (s === 'superseded' || s === 'deprecated') return 'archived'
+  if (s === 'rejected') return 'closed'
+  return 'created'
+}
+
+function isoFromDate(date: string): string {
+  try {
+    const d = new Date(date)
+    if (!isNaN(d.getTime())) return d.toISOString()
+  } catch { /* fall through */ }
+  return new Date(0).toISOString()
+}
+
 export function parseADRs(coreRepoPath: string): ADRManifest[] {
   const adrDir = resolveADRDir(coreRepoPath)
   if (!adrDir) return []
