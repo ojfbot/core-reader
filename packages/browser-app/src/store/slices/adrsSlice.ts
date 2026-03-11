@@ -29,7 +29,7 @@ const initialState: ADRsState = {
   lensView: 'all',
 }
 
-const API_URL = () => import.meta.env.VITE_CORE_READER_API_URL || 'http://localhost:3016'
+const API_URL = () => import.meta.env.VITE_CORE_READER_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
 
 export const fetchADRs = createAsyncThunk('adrs/fetchAll', async () => {
   const res = await fetch(`${API_URL()}/api/adrs`)
