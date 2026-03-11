@@ -7,7 +7,7 @@
 
 `core-reader` is a Frame OS sub-app that reads the `core` repo's own filesystem and
 surfaces its slash commands, ADRs, and roadmap as a queryable dashboard. It appears
-in the shell's app switcher alongside cv-builder, blogengine, and tripplanner.
+in the shell's app switcher alongside resume-builder, blogengine, and tripplanner.
 
 Port assignment (ADR-0010): browser-app :3015 (standalone) / :3015 (MF remote to shell), API :3016.
 
