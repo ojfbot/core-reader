@@ -3,6 +3,11 @@
   "outputDirectory": "packages/browser-app/dist",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": null,
+  "functions": {
+    "api/[...slug].js": {
+      "includeFiles": "decisions/**"
+    }
+  },
   "rewrites": [
     { "source": "/((?!assets/|api/).*)", "destination": "/index.html" }
   ],
