@@ -20,7 +20,7 @@ const initialState: RoadmapState = {
 }
 
 export const fetchRoadmap = createAsyncThunk('roadmap/fetchAll', async () => {
-  const base = import.meta.env.VITE_CORE_READER_API_URL || 'http://localhost:3016'
+  const base = import.meta.env.VITE_CORE_READER_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
   const res = await fetch(`${base}/api/roadmap`)
   if (!res.ok) throw new Error(`Failed to fetch roadmap: ${res.status}`)
   return res.json() as Promise<RoadmapPhase[]>

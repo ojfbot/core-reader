@@ -27,13 +27,15 @@ const initialState: CommandsState = {
 }
 
 export const fetchCommands = createAsyncThunk('commands/fetchAll', async () => {
-  const res = await fetch(`${import.meta.env.VITE_CORE_READER_API_URL || 'http://localhost:3016'}/api/commands`)
+  const base = import.meta.env.VITE_CORE_READER_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
+  const res = await fetch(`${base}/api/commands`)
   if (!res.ok) throw new Error(`Failed to fetch commands: ${res.status}`)
   return res.json() as Promise<CommandManifest[]>
 })
 
 export const fetchCommandContent = createAsyncThunk('commands/fetchOne', async (name: string) => {
-  const res = await fetch(`${import.meta.env.VITE_CORE_READER_API_URL || 'http://localhost:3016'}/api/commands/${name}`)
+  const base = import.meta.env.VITE_CORE_READER_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
+  const res = await fetch(`${base}/api/commands/${name}`)
   if (!res.ok) throw new Error(`Failed to fetch command: ${res.status}`)
   return res.json() as Promise<CommandManifest>
 })

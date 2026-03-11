@@ -1,14 +1,26 @@
 import fs from 'fs'
 import path from 'path'
 import { RoadmapPhase } from '../types'
+import { fetchGitHubFile } from '../github'
+
+// ── Local filesystem ────────────────────────────────────────────────────────
 
 export function parseRoadmap(coreRepoPath: string): RoadmapPhase[] {
   const contextPath = path.join(coreRepoPath, 'domain-knowledge', 'frame-os-context.md')
   if (!fs.existsSync(contextPath)) return []
+  return parseRoadmapContent(fs.readFileSync(contextPath, 'utf-8'))
+}
 
-  const content = fs.readFileSync(contextPath, 'utf-8')
+// ── GitHub ──────────────────────────────────────────────────────────────────
 
-  // Find the roadmap phases table
+export async function parseRoadmapFromGitHub(repo: string, token: string): Promise<RoadmapPhase[]> {
+  const content = await fetchGitHubFile(repo, 'domain-knowledge/frame-os-context.md', token)
+  return parseRoadmapContent(content)
+}
+
+// ── Shared parsing ──────────────────────────────────────────────────────────
+
+function parseRoadmapContent(content: string): RoadmapPhase[] {
   const sectionMatch = content.match(/##\s+The roadmap phases\s*\n([\s\S]+?)(?:\n---|\n##|$)/)
   if (!sectionMatch) return []
 
