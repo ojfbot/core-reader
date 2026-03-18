@@ -8,9 +8,16 @@ import { setActiveTab } from '../store/slices/navigationSlice'
 import { fetchCommands } from '../store/slices/commandsSlice'
 import { fetchADRs } from '../store/slices/adrsSlice'
 import { fetchRoadmap } from '../store/slices/roadmapSlice'
+import { fetchOKRs } from '../store/slices/okrsSlice'
+import { fetchDocs } from '../store/slices/docsSlice'
+import { fetchEvents } from '../store/slices/eventsSlice'
 import CommandsTab from './CommandsTab'
 import ADRsTab from './ADRsTab'
 import RoadmapTab from './RoadmapTab'
+import OKRsTab from './OKRsTab'
+import DocsTab from './DocsTab'
+import ChangesTab from './ChangesTab'
+import EventsTab from './EventsTab'
 import CondensedChat from './CondensedChat'
 import ThreadSidebar from './ThreadSidebar'
 // Styles must be imported here, not only in main.tsx.
@@ -28,7 +35,7 @@ interface DashboardProps {
   shellMode?: boolean
 }
 
-const TABS = ['commands', 'adrs', 'roadmap'] as const
+const TABS = ['commands', 'adrs', 'roadmap', 'okrs', 'docs', 'changes', 'events'] as const
 
 function DashboardContent({ shellMode }: DashboardProps) {
   const dispatch = useAppDispatch()
@@ -40,6 +47,9 @@ function DashboardContent({ shellMode }: DashboardProps) {
     dispatch(fetchCommands())
     dispatch(fetchADRs())
     dispatch(fetchRoadmap())
+    dispatch(fetchOKRs())
+    dispatch(fetchDocs())
+    dispatch(fetchEvents())
   }, [dispatch])
 
   const tabIndex = TABS.indexOf(activeTab)
@@ -80,11 +90,19 @@ function DashboardContent({ shellMode }: DashboardProps) {
             <Tab>Commands</Tab>
             <Tab>ADRs</Tab>
             <Tab>Roadmap</Tab>
+            <Tab>OKRs</Tab>
+            <Tab>Docs</Tab>
+            <Tab>Changes</Tab>
+            <Tab>Activity</Tab>
           </TabList>
           <TabPanels>
             <TabPanel><CommandsTab /></TabPanel>
             <TabPanel><ADRsTab /></TabPanel>
             <TabPanel><RoadmapTab /></TabPanel>
+            <TabPanel><OKRsTab /></TabPanel>
+            <TabPanel><DocsTab /></TabPanel>
+            <TabPanel><ChangesTab /></TabPanel>
+            <TabPanel><EventsTab /></TabPanel>
           </TabPanels>
         </Tabs>
       </div>
