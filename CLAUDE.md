@@ -43,7 +43,7 @@ VITE_CORE_READER_API_URL=http://localhost:3016
   commands (`.claude/commands/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
   No database — the `core` repo filesystem IS the source of truth.
 - `packages/browser-app/` — React 18 + Carbon Design System + Vite MF remote.
-  Three Phase 1 tabs: Commands | ADRs | Roadmap. CondensedChat footer (disabled Phase 1).
+  Seven tabs across Phases 1–5: Commands | ADRs | Roadmap | OKRs | Docs | Changes | Activity. CondensedChat footer (disabled Phase 1).
   Shell integration follows `domain-knowledge/shell-mf-integration.md` exactly.
 
 ## Shell MF integration invariants
@@ -53,12 +53,13 @@ Key rules:
 - `Dashboard.tsx` always exports with `shellMode?: boolean` prop + double-Provider
 - `vite-plugin-css-injected-by-js` before federation in vite.config.ts
 - `@carbon/react` must be in shared singleton map (object form)
-- Thread sidebar uses `inert=""` wrapper (Phase 4 — not present in Phase 1)
+- Thread sidebar uses `inert=""` wrapper (Phase 4 — now present as of phases 2–5 merge)
 - Never remove `isolation: isolate` from `.main-content` in the shell
 
-## Phase 1 scope
+## Current scope (Phases 1–5)
 
-Read-only Commands + ADRs + Roadmap tabs. No mutations, no chat agent, no threads.
-CondensedChat input visible but disabled ("available in Phase 4").
+Seven dashboard tabs: Commands, ADRs, Roadmap (Phase 1), OKRs, Docs, Changes, Activity (Phases 2–5).
+No mutations, no chat agent, no threads yet.
 
+See `domain-knowledge/corereader-ux-research.md` for full IA spec.
 See `domain-knowledge/corereader-ux-research.md` for full IA spec.
