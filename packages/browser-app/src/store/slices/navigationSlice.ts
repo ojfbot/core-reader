@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export type ActiveTab = 'commands' | 'adrs' | 'roadmap'
+export type ActiveTab = 'commands' | 'adrs' | 'roadmap' | 'okrs' | 'docs' | 'changes' | 'events'
 
 interface NavigationState {
   activeTab: ActiveTab

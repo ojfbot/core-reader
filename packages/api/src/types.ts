@@ -25,3 +25,55 @@ export interface RoadmapPhase {
   repos: string[]
   status: string
 }
+
+export interface OKRKeyResult {
+  id: string
+  text: string
+  status: string
+  completedDate?: string
+  detail?: string
+}
+
+export interface OKRObjective {
+  id: string
+  title: string
+  description: string
+  keyResults: OKRKeyResult[]
+  linkedADRs: string[]
+}
+
+export interface OKRFile {
+  filename: string
+  period: string
+  status: string
+  objectives: OKRObjective[]
+}
+
+export interface DocManifest {
+  name: string
+  title: string
+  content?: string
+}
+
+export interface FileStatus {
+  path: string
+  status: string
+}
+
+export interface GitStatusResult {
+  staged: FileStatus[]
+  unstaged: FileStatus[]
+  untracked: string[]
+}
+
+export interface EventEntry {
+  id: string
+  timestamp: string
+  type: string
+  actor: string
+  bead_id?: string
+  agent_id?: string
+  app: string
+  summary: string
+  payload?: Record<string, unknown>
+}
