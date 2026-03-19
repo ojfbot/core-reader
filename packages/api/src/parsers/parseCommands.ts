@@ -6,7 +6,7 @@ import { fetchGitHubTree, fetchGitHubBlob, fetchGitHubFile } from '../github'
 // ── Local filesystem ────────────────────────────────────────────────────────
 
 export function parseCommands(coreRepoPath: string): CommandManifest[] {
-  const commandsDir = path.join(coreRepoPath, '.claude', 'commands')
+  const commandsDir = path.join(coreRepoPath, '.claude', 'skills')
   if (!fs.existsSync(commandsDir)) return []
 
   const entries = fs.readdirSync(commandsDir, { withFileTypes: true })
@@ -22,7 +22,7 @@ export function parseCommands(coreRepoPath: string): CommandManifest[] {
 }
 
 export function getCommandContent(coreRepoPath: string, name: string): CommandManifest | null {
-  const commandsDir = path.join(coreRepoPath, '.claude', 'commands')
+  const commandsDir = path.join(coreRepoPath, '.claude', 'skills')
   const cmd = parseCommandEntry(commandsDir, name)
   if (!cmd) return null
 
@@ -47,8 +47,8 @@ function parseCommandEntry(commandsDir: string, name: string): CommandManifest |
 
 // ── GitHub ──────────────────────────────────────────────────────────────────
 
-const COMMANDS_PREFIX = '.claude/commands'
-const CMD_RE = /^\.claude\/commands\/([^/]+)\/\1\.md$/
+const COMMANDS_PREFIX = '.claude/skills'
+const CMD_RE = /^\.claude\/skills\/([^/]+)\/\1\.md$/
 
 /**
  * Parse all commands from the GitHub repo.
