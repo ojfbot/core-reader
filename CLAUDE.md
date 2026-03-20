@@ -40,7 +40,7 @@ VITE_CORE_READER_API_URL=http://localhost:3016
 ## Architecture
 
 - `packages/api/` — Express :3016. Reads `CORE_REPO_PATH` filesystem. Parsers for
-  commands (`.claude/commands/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
+  commands (`.claude/skills/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
   No database — the `core` repo filesystem IS the source of truth.
 - `packages/browser-app/` — React 18 + Carbon Design System + Vite MF remote.
   Seven tabs across Phases 1–5: Commands | ADRs | Roadmap | OKRs | Docs | Changes | Activity. CondensedChat footer (disabled Phase 1).
