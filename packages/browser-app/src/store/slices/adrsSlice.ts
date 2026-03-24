@@ -7,7 +7,7 @@ export interface ADRManifest {
   date: string
   okr: string
   reposAffected: string[]
-  commandsAffected: string[]
+  skillsAffected: string[]
   content?: string
 }
 

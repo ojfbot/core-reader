@@ -79,18 +79,18 @@
   min-width: 4rem;
 }
 
-/* Command cross-link button — Tag appearance with click affordance */
-.adr-card__cmd-link {
+/* Skill cross-link button — Tag appearance with click affordance */
+.adr-card__skill-link {
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   transition: opacity 0.15s;
 }
-.adr-card__cmd-link:hover {
+.adr-card__skill-link:hover {
   opacity: 0.8;
 }
-.adr-card__cmd-link .cds--tag {
+.adr-card__skill-link .cds--tag {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -101,7 +101,7 @@
   line-height: 1.5;
 }
 
-/* Reuse CommandCard markdown styles */
+/* Reuse SkillCard markdown styles */
 .adr-card__markdown h1,
 .adr-card__markdown h2,
 .adr-card__markdown h3 {

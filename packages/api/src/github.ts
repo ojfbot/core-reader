@@ -1,6 +1,6 @@
 /**
  * Minimal GitHub API client for reading files from a private repo.
- * Used to serve commands + roadmap data from ojfbot/core on Vercel,
+ * Used to serve skills + roadmap data from ojfbot/core on Vercel,
  * where the local core checkout is not available.
  *
  * Requires: GITHUB_TOKEN env var (PAT with contents:read on ojfbot/core)
@@ -25,7 +25,7 @@ export interface GitHubTreeEntry {
 
 /**
  * Fetch the full recursive git tree for HEAD.
- * One API call — use this to enumerate all commands before fetching blobs.
+ * One API call — use this to enumerate all skills before fetching blobs.
  */
 export async function fetchGitHubTree(repo: string, token: string): Promise<GitHubTreeEntry[]> {
   const res = await fetch(
@@ -56,7 +56,7 @@ export async function fetchGitHubBlob(repo: string, sha: string, token: string):
 
 /**
  * Fetch a single file by path and decode from base64.
- * Use for targeted single-file lookups (e.g. frame-os-context.md, one command).
+ * Use for targeted single-file lookups (e.g. frame-os-context.md, one skill).
  */
 export async function fetchGitHubFile(repo: string, filePath: string, token: string): Promise<string> {
   const res = await fetch(

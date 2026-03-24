@@ -6,8 +6,8 @@
 ## What this repo is
 
 `core-reader` is a Frame OS sub-app that reads the `core` repo's own filesystem and
-surfaces its slash commands, ADRs, and roadmap as a queryable dashboard. It appears
-in the shell's app switcher alongside resume-builder, blogengine, and tripplanner.
+surfaces its slash skills, ADRs, and roadmap as a queryable dashboard. It appears
+in the shell's app switcher alongside cv-builder, blogengine, and tripplanner.
 
 Port assignment (ADR-0010): browser-app :3015 (standalone) / :3015 (MF remote to shell), API :3016.
 
@@ -40,10 +40,10 @@ VITE_CORE_READER_API_URL=http://localhost:3016
 ## Architecture
 
 - `packages/api/` — Express :3016. Reads `CORE_REPO_PATH` filesystem. Parsers for
-  commands (`.claude/skills/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
+  skills (`.claude/skills/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
   No database — the `core` repo filesystem IS the source of truth.
 - `packages/browser-app/` — React 18 + Carbon Design System + Vite MF remote.
-  Seven tabs across Phases 1–5: Commands | ADRs | Roadmap | OKRs | Docs | Changes | Activity. CondensedChat footer (disabled Phase 1).
+  Seven tabs across Phases 1–5: Skills | ADRs | Roadmap | OKRs | Docs | Changes | Activity. CondensedChat footer (disabled Phase 1).
   Shell integration follows `domain-knowledge/shell-mf-integration.md` exactly.
 
 ## Shell MF integration invariants
@@ -58,8 +58,7 @@ Key rules:
 
 ## Current scope (Phases 1–5)
 
-Seven dashboard tabs: Commands, ADRs, Roadmap (Phase 1), OKRs, Docs, Changes, Activity (Phases 2–5).
+Seven dashboard tabs: Skills, ADRs, Roadmap (Phase 1), OKRs, Docs, Changes, Activity (Phases 2–5).
 No mutations, no chat agent, no threads yet.
 
-See `domain-knowledge/corereader-ux-research.md` for full IA spec.
 See `domain-knowledge/corereader-ux-research.md` for full IA spec.

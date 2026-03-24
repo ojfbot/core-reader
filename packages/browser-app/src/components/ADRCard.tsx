@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ADRManifest, fetchADRContent } from '../store/slices/adrsSlice'
 import { setActiveTab } from '../store/slices/navigationSlice'
-import { setFilter } from '../store/slices/commandsSlice'
+import { setFilter } from '../store/slices/skillsSlice'
 import { useAppDispatch } from '../store/hooks'
 import './ADRCard.css'
 
@@ -33,11 +33,11 @@ export function ADRCard({ adr }: ADRCardProps) {
     setExpanded(prev => !prev)
   }
 
-  // Cross-link: clicking a command name in commandsAffected navigates to Commands tab
-  const goToCommand = (cmdName: string) => {
-    const clean = cmdName.replace(/^\//, '')
+  // Cross-link: clicking a skill name in skillsAffected navigates to Skills tab
+  const goToSkill = (skillName: string) => {
+    const clean = skillName.replace(/^\//, '')
     dispatch(setFilter({ search: clean }))
-    dispatch(setActiveTab('commands'))
+    dispatch(setActiveTab('skills'))
   }
 
   return (
@@ -76,18 +76,18 @@ export function ADRCard({ adr }: ADRCardProps) {
             </div>
           )}
 
-          {/* Commands affected — cross-linked */}
-          {adr.commandsAffected.length > 0 && (
+          {/* Skills affected — cross-linked */}
+          {adr.skillsAffected.length > 0 && (
             <div className="adr-card__chips">
-              <span className="adr-card__chip-label">Commands</span>
-              {adr.commandsAffected.map(cmd => (
+              <span className="adr-card__chip-label">Skills</span>
+              {adr.skillsAffected.map(skill => (
                 <button
-                  key={cmd}
-                  className="adr-card__cmd-link"
-                  onClick={e => { e.stopPropagation(); goToCommand(cmd) }}
-                  title={`Go to ${cmd} in Commands tab`}
+                  key={skill}
+                  className="adr-card__skill-link"
+                  onClick={e => { e.stopPropagation(); goToSkill(skill) }}
+                  title={`Go to ${skill} in Skills tab`}
                 >
-                  <Tag type="purple" size="sm">{cmd}</Tag>
+                  <Tag type="purple" size="sm">{skill}</Tag>
                 </button>
               ))}
             </div>

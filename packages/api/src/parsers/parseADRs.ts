@@ -126,7 +126,7 @@ function parseADRFile(filePath: string, filename: string): ADRManifest {
     date: getMeta('Date'),
     okr: getMeta('OKR'),
     reposAffected: splitList(getMeta('Repos affected')),
-    commandsAffected: splitList(getMeta('Commands affected')),
+    skillsAffected: splitList(getMeta('Skills affected') || getMeta('Commands affected')),
   }
 }
 

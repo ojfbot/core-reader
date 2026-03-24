@@ -1,78 +1,78 @@
 import fs from 'fs'
 import path from 'path'
-import { CommandManifest } from '../types'
+import { SkillManifest } from '../types'
 import { fetchGitHubTree, fetchGitHubBlob, fetchGitHubFile } from '../github'
 
 // ── Local filesystem ────────────────────────────────────────────────────────
 
-export function parseCommands(coreRepoPath: string): CommandManifest[] {
-  const commandsDir = path.join(coreRepoPath, '.claude', 'skills')
-  if (!fs.existsSync(commandsDir)) return []
+export function parseSkills(coreRepoPath: string): SkillManifest[] {
+  const skillsDir = path.join(coreRepoPath, '.claude', 'skills')
+  if (!fs.existsSync(skillsDir)) return []
 
-  const entries = fs.readdirSync(commandsDir, { withFileTypes: true })
-  const commands: CommandManifest[] = []
+  const entries = fs.readdirSync(skillsDir, { withFileTypes: true })
+  const skills: SkillManifest[] = []
 
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
-    const cmd = parseCommandEntry(commandsDir, entry.name)
-    if (cmd) commands.push(cmd)
+    const skill = parseSkillEntry(skillsDir, entry.name)
+    if (skill) skills.push(skill)
   }
 
-  return commands.sort((a, b) => a.name.localeCompare(b.name))
+  return skills.sort((a, b) => a.name.localeCompare(b.name))
 }
 
-export function getCommandContent(coreRepoPath: string, name: string): CommandManifest | null {
-  const commandsDir = path.join(coreRepoPath, '.claude', 'skills')
-  const cmd = parseCommandEntry(commandsDir, name)
-  if (!cmd) return null
+export function getSkillContent(coreRepoPath: string, name: string): SkillManifest | null {
+  const skillsDir = path.join(coreRepoPath, '.claude', 'skills')
+  const skill = parseSkillEntry(skillsDir, name)
+  if (!skill) return null
 
-  const mdPath = path.join(commandsDir, name, `${name}.md`)
-  cmd.content = fs.readFileSync(mdPath, 'utf-8')
-  return cmd
+  const mdPath = path.join(skillsDir, name, `${name}.md`)
+  skill.content = fs.readFileSync(mdPath, 'utf-8')
+  return skill
 }
 
-function parseCommandEntry(commandsDir: string, name: string): CommandManifest | null {
-  const mdPath = path.join(commandsDir, name, `${name}.md`)
+function parseSkillEntry(skillsDir: string, name: string): SkillManifest | null {
+  const mdPath = path.join(skillsDir, name, `${name}.md`)
   if (!fs.existsSync(mdPath)) return null
 
   const content = fs.readFileSync(mdPath, 'utf-8')
-  const knowledgeDir = path.join(commandsDir, name, 'knowledge')
+  const knowledgeDir = path.join(skillsDir, name, 'knowledge')
   const knowledgeFiles = fs.existsSync(knowledgeDir)
     ? fs.readdirSync(knowledgeDir).filter(f => f.endsWith('.md'))
     : []
-  const hasScripts = fs.existsSync(path.join(commandsDir, name, 'scripts'))
+  const hasScripts = fs.existsSync(path.join(skillsDir, name, 'scripts'))
 
   return buildManifestFromContent(name, content, knowledgeFiles, hasScripts)
 }
 
 // ── GitHub ──────────────────────────────────────────────────────────────────
 
-const COMMANDS_PREFIX = '.claude/skills'
-const CMD_RE = /^\.claude\/skills\/([^/]+)\/\1\.md$/
+const SKILLS_PREFIX = '.claude/skills'
+const SKILL_RE = /^\.claude\/skills\/([^/]+)\/\1\.md$/
 
 /**
- * Parse all commands from the GitHub repo.
- * One tree fetch + parallel blob fetches (one per command).
+ * Parse all skills from the GitHub repo.
+ * One tree fetch + parallel blob fetches (one per skill).
  */
-export async function parseCommandsFromGitHub(repo: string, token: string): Promise<CommandManifest[]> {
+export async function parseSkillsFromGitHub(repo: string, token: string): Promise<SkillManifest[]> {
   const tree = await fetchGitHubTree(repo, token)
 
-  const commandBlobs = tree.filter(e => e.type === 'blob' && CMD_RE.test(e.path))
+  const skillBlobs = tree.filter(e => e.type === 'blob' && SKILL_RE.test(e.path))
 
-  const manifests = await Promise.all(commandBlobs.map(async entry => {
-    const name = entry.path.match(CMD_RE)![1]
+  const manifests = await Promise.all(skillBlobs.map(async entry => {
+    const name = entry.path.match(SKILL_RE)![1]
     const content = await fetchGitHubBlob(repo, entry.sha, token)
 
     const knowledgeFiles = tree
       .filter(e =>
         e.type === 'blob' &&
-        e.path.startsWith(`${COMMANDS_PREFIX}/${name}/knowledge/`) &&
+        e.path.startsWith(`${SKILLS_PREFIX}/${name}/knowledge/`) &&
         e.path.endsWith('.md')
       )
       .map(e => e.path.split('/').pop()!)
 
     const hasScripts = tree.some(e =>
-      e.path.startsWith(`${COMMANDS_PREFIX}/${name}/scripts/`)
+      e.path.startsWith(`${SKILLS_PREFIX}/${name}/scripts/`)
     )
 
     return buildManifestFromContent(name, content, knowledgeFiles, hasScripts)
@@ -82,16 +82,16 @@ export async function parseCommandsFromGitHub(repo: string, token: string): Prom
 }
 
 /**
- * Fetch a single command by name from GitHub, including full content.
+ * Fetch a single skill by name from GitHub, including full content.
  * knowledgeFiles + hasScripts are omitted (would require extra API calls).
  */
-export async function getCommandFromGitHub(
+export async function getSkillFromGitHub(
   repo: string,
   token: string,
   name: string,
-): Promise<CommandManifest | null> {
+): Promise<SkillManifest | null> {
   try {
-    const content = await fetchGitHubFile(repo, `${COMMANDS_PREFIX}/${name}/${name}.md`, token)
+    const content = await fetchGitHubFile(repo, `${SKILLS_PREFIX}/${name}/${name}.md`, token)
     const manifest = buildManifestFromContent(name, content, [], false)
     manifest.content = content
     return manifest
@@ -107,7 +107,7 @@ function buildManifestFromContent(
   content: string,
   knowledgeFiles: string[],
   hasScripts: boolean,
-): CommandManifest {
+): SkillManifest {
   const tierMatch = content.match(/\*\*Tier:\*\*\s*(\d+)/)
   const phaseMatch = content.match(/\*\*Phase:\*\*\s*(.+?)(?:\n|$)/)
 
