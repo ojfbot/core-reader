@@ -11,7 +11,7 @@ in the shell's app switcher alongside cv-builder, blogengine, and tripplanner.
 
 Port assignment (ADR-0010): browser-app :3015 (standalone) / :3015 (MF remote to shell), API :3016.
 
-## Commands
+## Skills
 
 ```bash
 pnpm install
@@ -40,10 +40,10 @@ VITE_CORE_READER_API_URL=http://localhost:3016
 ## Architecture
 
 - `packages/api/` — Express :3016. Reads `CORE_REPO_PATH` filesystem. Parsers for
-  skills (`.claude/skills/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
+  skills (`.claude/skills/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`). Shared UI components from `@ojfbot/frame-ui-components`.
   No database — the `core` repo filesystem IS the source of truth.
 - `packages/browser-app/` — React 18 + Carbon Design System + Vite MF remote.
-  Seven tabs across Phases 1–5: Skills | ADRs | Roadmap | OKRs | Docs | Changes | Activity. CondensedChat footer (disabled Phase 1).
+  Seven tabs across Phases 1–5: Skills | ADRs | Roadmap | OKRs | Docs | Changes | Activity. UI primitives (`CondensedChat`, `DashboardLayout`, `ThreadSidebar`, etc.) imported from `@ojfbot/frame-ui-components` — no local copies.
   Shell integration follows `domain-knowledge/shell-mf-integration.md` exactly.
 
 ## Shell MF integration invariants
