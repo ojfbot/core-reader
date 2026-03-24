@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import navigationReducer from './slices/navigationSlice'
-import commandsReducer from './slices/commandsSlice'
+import skillsReducer from './slices/skillsSlice'
 import adrsReducer from './slices/adrsSlice'
 import roadmapReducer from './slices/roadmapSlice'
 import chatReducer from './slices/chatSlice'
@@ -13,7 +13,7 @@ import eventsReducer from './slices/eventsSlice'
 export const store = configureStore({
   reducer: {
     navigation: navigationReducer,
-    commands: commandsReducer,
+    skills: skillsReducer,
     adrs: adrsReducer,
     roadmap: roadmapReducer,
     chat: chatReducer,

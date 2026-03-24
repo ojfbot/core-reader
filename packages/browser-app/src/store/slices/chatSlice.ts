@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BadgeAction } from '../../components/BadgeButton'
+import { createSimpleBadge } from '@ojfbot/frame-ui-components'
+import type { BadgeAction } from '@ojfbot/frame-ui-components'
 
 export interface ChatMessage {
   role: 'user' | 'assistant'
@@ -25,28 +26,22 @@ const initialState: ChatState = {
       role: 'assistant',
       content: `# CoreReader Assistant
 
-Explore commands, ADRs, and roadmap items. Ask questions about the codebase.
+Explore skills, ADRs, and roadmap items. Ask questions about the codebase.
 
 **Chat wiring coming in Phase 4. Use the shortcuts below to get started:**`,
       suggestions: [
-        {
-          label: 'List commands',
+        createSimpleBadge('List skills', 'List all available slash skills', {
           icon: '📋',
-          message: 'List all available slash commands',
           variant: 'blue',
-        },
-        {
-          label: 'Find ADR',
+        }),
+        createSimpleBadge('Find ADR', 'Show me all accepted ADRs', {
           icon: '📄',
-          message: 'Show me all accepted ADRs',
           variant: 'teal',
-        },
-        {
-          label: 'Roadmap status',
+        }),
+        createSimpleBadge('Roadmap status', 'What is the current roadmap status?', {
           icon: '🗺️',
-          message: 'What is the current roadmap status?',
           variant: 'green',
-        },
+        }),
       ],
     },
   ],

@@ -10,9 +10,9 @@ async function get<T>(path: string): Promise<T> {
 }
 
 export const api = {
-  commands: {
-    list: () => get<import('../store/slices/commandsSlice').CommandManifest[]>('/api/commands'),
-    get: (name: string) => get<import('../store/slices/commandsSlice').CommandManifest>(`/api/commands/${name}`),
+  skills: {
+    list: () => get<import('../store/slices/skillsSlice').SkillManifest[]>('/api/skills'),
+    get: (name: string) => get<import('../store/slices/skillsSlice').SkillManifest>(`/api/skills/${name}`),
   },
   adrs: {
     list: (status?: string) =>

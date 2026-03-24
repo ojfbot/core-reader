@@ -1,4 +1,4 @@
-export interface CommandManifest {
+export interface SkillManifest {
   name: string
   tier: number | null
   phase: string | null
@@ -15,7 +15,7 @@ export interface ADRManifest {
   date: string
   okr: string
   reposAffected: string[]
-  commandsAffected: string[]
+  skillsAffected: string[]
   content?: string
 }
 

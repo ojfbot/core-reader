@@ -7,20 +7,20 @@ export function toolsRouter(): Router {
     res.json({
       service: 'core-reader',
       version: '1.0.0',
-      description: 'Reads the core repo filesystem and surfaces commands, ADRs, and roadmap as queryable APIs',
+      description: 'Reads the core repo filesystem and surfaces skills, ADRs, and roadmap as queryable APIs',
       tools: [
         {
-          name: 'get_commands',
-          endpoint: 'GET /api/commands',
-          description: 'List all slash commands with tier, phase, and description',
+          name: 'get_skills',
+          endpoint: 'GET /api/skills',
+          description: 'List all slash skills with tier, phase, and description',
           input: {},
           deprecated: false,
         },
         {
-          name: 'get_command',
-          endpoint: 'GET /api/commands/:name',
-          description: 'Get full markdown content of a specific slash command',
-          input: { name: 'string — command name without leading slash (e.g. plan-feature)' },
+          name: 'get_skill',
+          endpoint: 'GET /api/skills/:name',
+          description: 'Get full markdown content of a specific slash skill',
+          input: { name: 'string — skill name without leading slash (e.g. plan-feature)' },
           deprecated: false,
         },
         {
@@ -46,7 +46,7 @@ export function toolsRouter(): Router {
         },
       ],
       dataEndpoints: {
-        commands: 'GET /api/commands',
+        skills: 'GET /api/skills',
         adrs: 'GET /api/adrs',
         roadmap: 'GET /api/roadmap',
       },

@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export type ActiveTab = 'commands' | 'adrs' | 'roadmap' | 'okrs' | 'docs' | 'changes' | 'events'
+export type ActiveTab = 'skills' | 'adrs' | 'roadmap' | 'okrs' | 'docs' | 'changes' | 'events'
 
 interface NavigationState {
   activeTab: ActiveTab
 }
 
 const initialState: NavigationState = {
-  activeTab: 'commands',
+  activeTab: 'skills',
 }
 
 const navigationSlice = createSlice({

@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import os from 'os'
 import path from 'path'
-import { commandsRouter } from './routes/commands'
+import { skillsRouter } from './routes/skills'
 import { adrsRouter } from './routes/adrs'
 import { roadmapRouter } from './routes/roadmap'
 import { toolsRouter } from './routes/tools'
@@ -27,7 +27,7 @@ export function createApp(coreRepoPath: string) {
   }))
   app.use(express.json())
 
-  app.use('/api/commands', commandsRouter(coreRepoPath))
+  app.use('/api/skills', skillsRouter(coreRepoPath))
   app.use('/api/adrs', adrsRouter(coreRepoPath))
   app.use('/api/roadmap', roadmapRouter(coreRepoPath))
   app.use('/api/tools', toolsRouter())

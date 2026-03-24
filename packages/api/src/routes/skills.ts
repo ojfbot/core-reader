@@ -1,28 +1,28 @@
 import { Router, Request, Response } from 'express'
 import {
-  parseCommands,
-  parseCommandsFromGitHub,
-  getCommandContent,
-  getCommandFromGitHub,
-} from '../parsers/parseCommands'
-import { CommandManifest } from '../types'
+  parseSkills,
+  parseSkillsFromGitHub,
+  getSkillContent,
+  getSkillFromGitHub,
+} from '../parsers/parseSkills'
+import { SkillManifest } from '../types'
 
-export function commandsRouter(coreRepoPath: string): Router {
+export function skillsRouter(coreRepoPath: string): Router {
   const router = Router()
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN
   const GITHUB_REPO = process.env.GITHUB_CORE_REPO ?? 'ojfbot/core'
 
   // In-memory cache — persists for the lifetime of the serverless function instance.
   // Deduplicates concurrent requests during the initial cold-start fetch.
-  let cache: CommandManifest[] | null = null
-  let cachePromise: Promise<CommandManifest[]> | null = null
+  let cache: SkillManifest[] | null = null
+  let cachePromise: Promise<SkillManifest[]> | null = null
 
-  function getAll(): Promise<CommandManifest[]> {
+  function getAll(): Promise<SkillManifest[]> {
     if (cache) return Promise.resolve(cache)
     if (cachePromise) return cachePromise
     cachePromise = (GITHUB_TOKEN
-      ? parseCommandsFromGitHub(GITHUB_REPO, GITHUB_TOKEN)
-      : Promise.resolve(parseCommands(coreRepoPath))
+      ? parseSkillsFromGitHub(GITHUB_REPO, GITHUB_TOKEN)
+      : Promise.resolve(parseSkills(coreRepoPath))
     ).then(result => {
       cache = result
       cachePromise = null
@@ -45,14 +45,14 @@ export function commandsRouter(coreRepoPath: string): Router {
   router.get('/:name', async (req: Request, res: Response) => {
     try {
       const name = String(req.params.name)
-      const command = GITHUB_TOKEN
-        ? await getCommandFromGitHub(GITHUB_REPO, GITHUB_TOKEN, name)
-        : getCommandContent(coreRepoPath, name)
-      if (!command) {
-        res.status(404).json({ error: 'Command not found' })
+      const skill = GITHUB_TOKEN
+        ? await getSkillFromGitHub(GITHUB_REPO, GITHUB_TOKEN, name)
+        : getSkillContent(coreRepoPath, name)
+      if (!skill) {
+        res.status(404).json({ error: 'Skill not found' })
         return
       }
-      res.json(command)
+      res.json(skill)
     } catch (err) {
       res.status(500).json({ error: String(err) })
     }

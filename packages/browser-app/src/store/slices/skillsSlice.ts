@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
-export interface CommandManifest {
+export interface SkillManifest {
   name: string
   tier: number | null
   phase: string | null
@@ -10,15 +10,15 @@ export interface CommandManifest {
   content?: string
 }
 
-interface CommandsState {
-  items: CommandManifest[]
+interface SkillsState {
+  items: SkillManifest[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
   selectedName: string | null
   filter: { tier: number | null; phase: string | null; search: string }
 }
 
-const initialState: CommandsState = {
+const initialState: SkillsState = {
   items: [],
   status: 'idle',
   error: null,
@@ -26,43 +26,43 @@ const initialState: CommandsState = {
   filter: { tier: null, phase: null, search: '' },
 }
 
-export const fetchCommands = createAsyncThunk('commands/fetchAll', async () => {
+export const fetchSkills = createAsyncThunk('skills/fetchAll', async () => {
   const base = import.meta.env.VITE_CORE_READER_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
-  const res = await fetch(`${base}/api/commands`)
-  if (!res.ok) throw new Error(`Failed to fetch commands: ${res.status}`)
-  return res.json() as Promise<CommandManifest[]>
+  const res = await fetch(`${base}/api/skills`)
+  if (!res.ok) throw new Error(`Failed to fetch skills: ${res.status}`)
+  return res.json() as Promise<SkillManifest[]>
 })
 
-export const fetchCommandContent = createAsyncThunk('commands/fetchOne', async (name: string) => {
+export const fetchSkillContent = createAsyncThunk('skills/fetchOne', async (name: string) => {
   const base = import.meta.env.VITE_CORE_READER_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3016')
-  const res = await fetch(`${base}/api/commands/${name}`)
-  if (!res.ok) throw new Error(`Failed to fetch command: ${res.status}`)
-  return res.json() as Promise<CommandManifest>
+  const res = await fetch(`${base}/api/skills/${name}`)
+  if (!res.ok) throw new Error(`Failed to fetch skill: ${res.status}`)
+  return res.json() as Promise<SkillManifest>
 })
 
-const commandsSlice = createSlice({
-  name: 'commands',
+const skillsSlice = createSlice({
+  name: 'skills',
   initialState,
   reducers: {
-    setSelectedCommand(state, action: PayloadAction<string | null>) {
+    setSelectedSkill(state, action: PayloadAction<string | null>) {
       state.selectedName = action.payload
     },
-    setFilter(state, action: PayloadAction<Partial<CommandsState['filter']>>) {
+    setFilter(state, action: PayloadAction<Partial<SkillsState['filter']>>) {
       state.filter = { ...state.filter, ...action.payload }
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchCommands.pending, state => { state.status = 'loading' })
-      .addCase(fetchCommands.fulfilled, (state, action) => {
+      .addCase(fetchSkills.pending, state => { state.status = 'loading' })
+      .addCase(fetchSkills.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.items = action.payload
       })
-      .addCase(fetchCommands.rejected, (state, action) => {
+      .addCase(fetchSkills.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message ?? 'Unknown error'
       })
-      .addCase(fetchCommandContent.fulfilled, (state, action) => {
+      .addCase(fetchSkillContent.fulfilled, (state, action) => {
         const idx = state.items.findIndex(c => c.name === action.payload.name)
         if (idx >= 0) state.items[idx] = action.payload
         else state.items.push(action.payload)
@@ -70,5 +70,5 @@ const commandsSlice = createSlice({
   },
 })
 
-export const { setSelectedCommand, setFilter } = commandsSlice.actions
-export default commandsSlice.reducer
+export const { setSelectedSkill, setFilter } = skillsSlice.actions
+export default skillsSlice.reducer
