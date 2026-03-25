@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { ChatShell, ChatMessage, MarkdownMessage, BadgeButton, getChatMessage } from '@ojfbot/frame-ui-components'
+import { ChatShell, ChatMessage, MarkdownMessage, getChatMessage } from '@ojfbot/frame-ui-components'
 import '@ojfbot/frame-ui-components/styles/chat-shell'
 import '@ojfbot/frame-ui-components/styles/markdown-message'
 import '@ojfbot/frame-ui-components/styles/badge-button'
