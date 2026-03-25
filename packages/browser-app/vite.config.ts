@@ -36,9 +36,16 @@ export default defineConfig({
       },
     }),
   ],
+  // Treat frame-ui-components as source (file: linked, not pre-built)
+  optimizeDeps: {
+    exclude: ['@ojfbot/frame-ui-components'],
+  },
   server: {
     port: 3015,
     cors: true,   // shell at :4000 needs to fetch remoteEntry.js cross-origin
+    fs: {
+      allow: ['../../..'],
+    },
   },
   preview: {
     port: 3015,
