@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel, Tooltip } from '@carbon/react'
 import { Menu, Close } from '@carbon/icons-react'
-import { DashboardLayout } from '@ojfbot/frame-ui-components'
+import { DashboardLayout, ErrorBoundary } from '@ojfbot/frame-ui-components'
 import '@ojfbot/frame-ui-components/styles/dashboard-layout'
 import { store } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -102,7 +102,9 @@ function DashboardContent({ shellMode }: DashboardProps) {
 function Dashboard({ shellMode }: DashboardProps) {
   return (
     <Provider store={store}>
-      <DashboardContent shellMode={shellMode} />
+      <ErrorBoundary>
+        <DashboardContent shellMode={shellMode} />
+      </ErrorBoundary>
     </Provider>
   )
 }
