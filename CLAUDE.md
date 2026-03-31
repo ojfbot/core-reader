@@ -62,3 +62,10 @@ Seven dashboard tabs: Skills, ADRs, Roadmap (Phase 1), OKRs, Docs, Changes, Acti
 No mutations, no chat agent, no threads yet.
 
 See `domain-knowledge/corereader-ux-research.md` for full IA spec.
+
+## Deployment
+
+**NEVER deploy directly to production** via CLI (`vercel deploy --prod`, `vercel promote`, etc.).
+All production deployments go through the GitHub PR → CI → merge → automated deploy pipeline.
+The only exception is `workflow_dispatch` for manual CI triggers.
+Local Vercel CLI usage is restricted to preview deploys only.
