@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
-import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel, Tooltip } from '@carbon/react'
-import { Menu, Close } from '@carbon/icons-react'
-import { DashboardLayout, ErrorBoundary } from '@ojfbot/frame-ui-components'
+import { Heading, Tabs, TabList, Tab, TabPanels, TabPanel } from '@carbon/react'
+import { DashboardLayout, ErrorBoundary, SidebarToggle } from '@ojfbot/frame-ui-components'
 import '@ojfbot/frame-ui-components/styles/dashboard-layout'
 import { store } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -58,15 +57,7 @@ function DashboardContent({ shellMode }: DashboardProps) {
         <DashboardLayout.Header>
           <Heading className="page-header">Core Reader Dashboard</Heading>
 
-          <Tooltip align="bottom-right" label={sidebarOpen ? 'Close threads' : 'Show threads'}>
-            <button
-              className="sidebar-toggle-btn"
-              onClick={() => setSidebarOpen(o => !o)}
-              aria-label="Toggle thread sidebar"
-            >
-              {sidebarOpen ? <Close size={20} /> : <Menu size={20} />}
-            </button>
-          </Tooltip>
+          <SidebarToggle isExpanded={sidebarOpen} onToggle={() => setSidebarOpen(o => !o)} />
         </DashboardLayout.Header>
 
         <Tabs
