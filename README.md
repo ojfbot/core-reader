@@ -6,11 +6,11 @@ Core Reader surfaces the `core` repo's slash commands, Architecture Decision Rec
 
 ## Features
 
-- **7-tab dashboard** — Skills, ADRs, Roadmap, OKRs, Docs, Changes, Activity
+- **Dashboard** — Skills, ADRs, Roadmap, OKRs, Docs, Changes, Activity tabs (some in progress)
 - **Filesystem-driven** — reads the core repo via `CORE_REPO_PATH` environment variable
 - **Module Federation remote** — renders inside the Frame OS shell alongside sibling apps
 - **Carbon Design System** — consistent dark/light theming with the rest of Frame OS
-- **Shared UI components** — uses `@ojfbot/frame-ui-components` for dashboard chrome
+- **Shared UI components** — uses `@ojfbot/frame-ui-components` (npm `^1.0.1`) for dashboard chrome
 
 ## Architecture
 
@@ -29,7 +29,7 @@ The API reads `.claude/skills/`, `decisions/adr/`, and `domain-knowledge/` from 
 | Build | Vite 5, Module Federation |
 | UI | React 18, Carbon Design System |
 | API | Express, chokidar (filesystem watch) |
-| Shared | @ojfbot/frame-ui-components |
+| Shared | @ojfbot/frame-ui-components (npm ^1.0.1) |
 | Language | TypeScript |
 
 ## Getting Started
@@ -59,7 +59,7 @@ pnpm dev:all    # API on :3016, frontend on :3015
 - [x] Module Federation remote registered in shell
 - [x] Vercel deployment
 - [ ] Phase 2: OKRs, Roadmap, Docs tabs
-- [ ] Phase 3: Cross-entity links
+- [ ] Phase 3: Cross-entity links (see core's ## See Also activation graph)
 - [ ] Phase 4: LangGraph chat agent via frame-agent
 - [ ] Phase 5: Changes + Activity tabs (git history)
 
