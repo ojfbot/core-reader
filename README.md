@@ -6,7 +6,7 @@ Core Reader surfaces the `core` repo's slash commands, Architecture Decision Rec
 
 ## Features
 
-- **Dashboard** — Skills, ADRs, Roadmap, OKRs, Docs, Changes, Activity tabs (some in progress)
+- **Dashboard** — Skills, ADRs, Roadmap, OKRs, Docs, Changes, Activity tabs
 - **Filesystem-driven** — reads the core repo via `CORE_REPO_PATH` environment variable
 - **Module Federation remote** — renders inside the Frame OS shell alongside sibling apps
 - **Carbon Design System** — consistent dark/light theming with the rest of Frame OS
@@ -61,7 +61,7 @@ pnpm dev:all    # API on :3016, frontend on :3015
 - [ ] Phase 2: OKRs, Roadmap, Docs tabs
 - [ ] Phase 3: Cross-entity links (see core's ## See Also activation graph)
 - [ ] Phase 4: LangGraph chat agent via frame-agent
-- [ ] Phase 5: Changes + Activity tabs (git history)
+- [x] Phase 5: Changes + Activity tabs (git history)
 
 ## License
 
@@ -85,4 +85,4 @@ Part of [Frame OS](https://github.com/ojfbot/shell) — an AI-native application
 | [daily-logger](https://github.com/ojfbot/daily-logger) | Automated daily dev blog pipeline |
 | [purefoy](https://github.com/ojfbot/purefoy) | Roger Deakins cinematography knowledge base |
 | [MrPlug](https://github.com/ojfbot/MrPlug) | Chrome extension for AI UI feedback |
-| [frame-ui-components](https://github.com/ojfbot/frame-ui-components) | Shared component library (Carbon DS) |
+| [frame-ui-components](https://github.com/ojfbot/frame-ui-components) | Shared component library (Carbon DS), published to npm as @ojfbot/frame-ui-components |
