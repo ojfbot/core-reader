@@ -43,7 +43,7 @@ VITE_CORE_READER_API_URL=http://localhost:3016
   skills (`.claude/skills/`), ADRs (`decisions/adr/`), roadmap (`frame-os-context.md`).
   No database — the `core` repo filesystem IS the source of truth.
 - `packages/browser-app/` — React 18 + Carbon Design System + Vite MF remote.
-  Seven tabs across Phases 1–5: Skills | ADRs | Roadmap | OKRs | Docs | Changes | Activity. UI primitives (`ChatShell`, `ChatMessage`, `MarkdownMessage`, `DashboardLayout`, `ErrorBoundary`, etc.) imported from `@ojfbot/frame-ui-components` — no local copies. Vite `optimizeDeps` must exclude `frame-ui-components` (symlinked source dep) and explicitly include its CJS transitive dependencies.
+  Seven tabs across Phases 1–5: Skills | ADRs | Roadmap | OKRs | Docs | Changes | Activity. UI primitives (`ChatShell`, `ChatMessage`, `MarkdownMessage`, `DashboardLayout`, `ErrorBoundary`, etc.) imported from `@ojfbot/frame-ui-components` — no local copies. `@ojfbot/frame-ui-components` is consumed as a published npm package; a Vite alias maps it back to local source during development (see ADR / fleet-wide decision on Vite alias bridging).
   Shell integration follows `domain-knowledge/shell-mf-integration.md` exactly.
 
 ## Shell MF integration invariants
