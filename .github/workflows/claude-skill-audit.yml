@@ -1,0 +1,17 @@
+name: Skill Audit
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  skill-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: ojfbot/github-actions/skill-audit@v1
