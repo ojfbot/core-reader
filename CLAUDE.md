@@ -24,8 +24,11 @@ pnpm --filter @core-reader/api dev       # API on :3016
 pnpm --filter @core-reader/browser-app dev   # browser-app on :3015
 
 pnpm build
+pnpm build
 pnpm test
-```
+
+# CI
+# Skill-audit runs via shared composite action from ojfbot/github-actions@v1
 
 ## Required environment
 
