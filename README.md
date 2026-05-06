@@ -69,8 +69,6 @@ MIT
 
 ## Frame OS Ecosystem
 
-Part of [Frame OS](https://github.com/ojfbot/shell) — an AI-native application OS.
-
 | Repo | Description |
 |------|-------------|
 | [shell](https://github.com/ojfbot/shell) | Module Federation host + frame-agent LLM gateway |
@@ -86,3 +84,6 @@ Part of [Frame OS](https://github.com/ojfbot/shell) — an AI-native application
 | [purefoy](https://github.com/ojfbot/purefoy) | Roger Deakins cinematography knowledge base |
 | [MrPlug](https://github.com/ojfbot/MrPlug) | Chrome extension for AI UI feedback |
 | [frame-ui-components](https://github.com/ojfbot/frame-ui-components) | Shared component library (Carbon DS), published to npm as @ojfbot/frame-ui-components |
+| [asset-foundry](https://github.com/ojfbot/asset-foundry) | 3D asset pipeline with dual Blender transports (ADR-0011) |
+| [beaverGame](https://github.com/ojfbot/beaverGame) | Babylon.js dodge gameplay |
+| [github-actions](https://github.com/ojfbot/github-actions) | Shared composite CI actions (skill-audit, ADR-0067) |
