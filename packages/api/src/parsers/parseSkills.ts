@@ -26,14 +26,25 @@ export function getSkillContent(coreRepoPath: string, name: string): SkillManife
   const skill = parseSkillEntry(skillsDir, name)
   if (!skill) return null
 
-  const mdPath = path.join(skillsDir, name, `${name}.md`)
-  skill.content = fs.readFileSync(mdPath, 'utf-8')
+  const bodyPath = resolveSkillBody(skillsDir, name)
+  if (!bodyPath) return null
+  skill.content = fs.readFileSync(bodyPath, 'utf-8')
   return skill
 }
 
+// Canonical skill body is SKILL.md (core ADR-0084); fall back to the legacy
+// <name>.md filename for skills not yet migrated.
+function resolveSkillBody(skillsDir: string, name: string): string | null {
+  const skillMd = path.join(skillsDir, name, 'SKILL.md')
+  if (fs.existsSync(skillMd)) return skillMd
+  const legacy = path.join(skillsDir, name, `${name}.md`)
+  if (fs.existsSync(legacy)) return legacy
+  return null
+}
+
 function parseSkillEntry(skillsDir: string, name: string): SkillManifest | null {
-  const mdPath = path.join(skillsDir, name, `${name}.md`)
-  if (!fs.existsSync(mdPath)) return null
+  const mdPath = resolveSkillBody(skillsDir, name)
+  if (!mdPath) return null
 
   const content = fs.readFileSync(mdPath, 'utf-8')
   const knowledgeDir = path.join(skillsDir, name, 'knowledge')
@@ -48,7 +59,9 @@ function parseSkillEntry(skillsDir: string, name: string): SkillManifest | null 
 // ── GitHub ──────────────────────────────────────────────────────────────────
 
 const SKILLS_PREFIX = '.claude/skills'
-const SKILL_RE = /^\.claude\/skills\/([^/]+)\/\1\.md$/
+// Canonical skill body is SKILL.md (core ADR-0084); the legacy <name>.md filename
+// is still matched as a fallback for unmigrated skills.
+const SKILL_RE = /^\.claude\/skills\/([^/]+)\/(SKILL|\1)\.md$/
 
 /**
  * Parse all skills from the GitHub repo.
@@ -57,11 +70,23 @@ const SKILL_RE = /^\.claude\/skills\/([^/]+)\/\1\.md$/
 export async function parseSkillsFromGitHub(repo: string, token: string): Promise<SkillManifest[]> {
   const tree = await fetchGitHubTree(repo, token)
 
-  const skillBlobs = tree.filter(e => e.type === 'blob' && SKILL_RE.test(e.path))
+  // A directory may carry both SKILL.md and a legacy <name>.md (e.g. /vault).
+  // Keep one blob per skill, preferring SKILL.md.
+  const blobByName = new Map<string, { sha: string; canonical: boolean }>()
+  for (const e of tree) {
+    if (e.type !== 'blob') continue
+    const m = e.path.match(SKILL_RE)
+    if (!m) continue
+    const name = m[1]
+    const canonical = m[2] === 'SKILL'
+    const existing = blobByName.get(name)
+    if (!existing || (canonical && !existing.canonical)) {
+      blobByName.set(name, { sha: e.sha, canonical })
+    }
+  }
 
-  const manifests = await Promise.all(skillBlobs.map(async entry => {
-    const name = entry.path.match(SKILL_RE)![1]
-    const content = await fetchGitHubBlob(repo, entry.sha, token)
+  const manifests = await Promise.all([...blobByName.entries()].map(async ([name, blob]) => {
+    const content = await fetchGitHubBlob(repo, blob.sha, token)
 
     const knowledgeFiles = tree
       .filter(e =>
@@ -91,7 +116,13 @@ export async function getSkillFromGitHub(
   name: string,
 ): Promise<SkillManifest | null> {
   try {
-    const content = await fetchGitHubFile(repo, `${SKILLS_PREFIX}/${name}/${name}.md`, token)
+    // Prefer the canonical SKILL.md (ADR-0084); fall back to legacy <name>.md.
+    let content: string
+    try {
+      content = await fetchGitHubFile(repo, `${SKILLS_PREFIX}/${name}/SKILL.md`, token)
+    } catch {
+      content = await fetchGitHubFile(repo, `${SKILLS_PREFIX}/${name}/${name}.md`, token)
+    }
     const manifest = buildManifestFromContent(name, content, [], false)
     manifest.content = content
     return manifest
